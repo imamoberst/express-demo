@@ -5,6 +5,7 @@ const courses = require("./router/course");
 const home = require("./router/home");
 const mongoose = require("mongoose");
 const users = require("./router/user");
+const auth = require("./router/auth");
 
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -26,5 +27,6 @@ koneksiDb();
 app.use("/api/courses", courses);
 app.use("/", home);
 app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 app.listen(3000, () => console.log("starting no port 3000"));
