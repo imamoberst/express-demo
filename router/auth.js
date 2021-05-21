@@ -5,6 +5,7 @@ const router = express.Router();
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const jwt = require("jsonwebtoken");
 
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
@@ -16,7 +17,9 @@ router.post("/", async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send("Invalid Password!");
 
-  res.send(true);
+  const token = jwt.sign({ _id: user._id }, "jwtPrivateKey");
+
+  res.send(token);
 });
 
 router.get("/test", (req, res) => {
