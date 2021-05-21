@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 const courses = [
   { id: 1, name: "course 1" },
@@ -8,7 +10,7 @@ const courses = [
   { id: 3, name: "course 3" },
 ];
 
-router.get("/", (req, res) => {
+router.get("/", auth, (req, res) => {
   res.send(courses);
 });
 
@@ -49,7 +51,7 @@ router.put("/:id", (req, res) => {
   res.send(course);
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", [auth, admin], (req, res) => {
   const course = courses.find((c) => c.id === parseInt(req.params.id));
   if (!course) {
     res.status(404).send("not Found");
